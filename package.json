@@ -17,4 +17,6 @@
     "email": "ryeonj829@gmail.com"
   },
   "homepage": "https://github.com/ryeonj829/express-test#readme"
+  "dependencies": {
+    "express": "^4.17.1"
 }
