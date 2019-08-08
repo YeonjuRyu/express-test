@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko-KR">
+
+<head>
+  <title>CSS Website Layout</title>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" type="text/css" href="mainstyle.css">
+  <script src="./functions.js"></script>
+</head>
+
+
+
+<body>
+
+<div class="topnav">
+  <a href="main.html">React Board</a>
+  <a href="#" id="left">로그인</a>
+  <a href="#" id="left">사진</a>
+  <a href="#" id="left">소개</a>
+  <a href="allpost.html" id="left">게시글</a>
+</div>
+
+<div class="row">
+    <div class="column left">
+        <h1>게시판</h1>
+         <div id="board_name" class = "table_style_left">
+      </div>
+ </div>
+ 
+<div class="column middle">
+    <img src="https://cdn.pixabay.com/photo/2019/07/25/10/43/ballerina-4362282_960_720.jpg" alt="Default Image" style="width:700px;height:500px;"></div>
+</div>
+
+<div class="footer">
+  <p> Copyright ⓒ Your Website 2019 </p>
+
+</body>
+
+<script>
+  //~~~ function, to bring board 
+  {
+    var boardList = document.getElementById("board_name")
+    //api에 있는 board list의 개수를  -> for문을 돌려서 가져온 후, 그만큼 카테고리 생성
+    var ul = document.createElement('ul');
+    getboardlist( _boardList => {
+      for(var i=0; i<_boardList.length; i++) {
+        var li = document.createElement('li');
+        var a = document.createElement('a');
+        a.innerHTML = _boardList[i].board_name;
+        a.id = _boardList[i].id;
+        a.href = "boardlist.html?id="+_boardList[i].id;
+        li.appendChild(a)
+        ul.appendChild(li);
+      }
+      //ul.appendChild(li); //ul 아래에 li을 넣어줌 
+      boardList.appendChild(ul); 
+    });
+  };
+</script>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Write something else you want</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="./functions.js"></script> <!--api post get functions-->
+    <link rel="stylesheet" type="text/css" href="mainstyle.css">
+</head>
+
+<body>
+    <div class="topnav">
+        <a href="main.html">React Board</a>
+        <b href="#">로그인</b>
+        <b href="#">사진</b>
+        <b href="#">소개</b>
+        <b href="#">게시판</b>
+    </div>
+      
+    <div class="row">
+      <div class="column left">
+          <h1>게시판</h1>
+          <div id="board_name" class = "table_style_left"> <!--일단 div로 영역을 만듬 이후에 js로 내부 태그 생성-->
+      </div>
+    </div>
+    <div class="column middle">
+        <table class="table table-bordered">
+          <thead>
+            <caption> 글쓰기 </caption>
+          </thead>
+            <tbody id="posting">
+              <form action=" " id="form_id" method="POST" encType="multiplart/form-data">
+                <tr>
+                  <th>제목: </th>
+                    <td><input type="text" placeholder="제목을 입력하세요. " name="post_title" class="form-control"/></td>
+                </tr>
+                <tr>
+                  <th>내용: </th>
+                    <td><textarea cols="10" placeholder="내용을 입력하세요. " name="post_content" class="form-control"></textarea></td>
+                </tr>
+                <tr>
+                  <td colspan="2">
+                    <input type="submit" value="글 등록" class="pull-right"/>
+                  </td>
+                </tr>
+              </form>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    <div class="footer">
+            <p> Copyright ⓒ Your Website 2019 </p>
+    </div>
+
+
+    
+
+
+    <script>
+      {
+        //function for calling boardlist
+         var boardList = document.getElementById("board_name")
+        //api에 있는 board list의 개수를  -> for문을 돌려서 가져온 후, 그만큼 카테고리 생성
+        var ul = document.createElement('ul');
+        getboardlist( _boardList => {
+          for(var i=0; i<_boardList.length; i++) {
+            var li = document.createElement('li');
+            var a = document.createElement('a');
+            a.innerHTML = _boardList[i].board_name;
+            a.id = _boardList[i].id;
+            a.href = "boardlist.html?id="+_boardList[i].id;
+            li.appendChild(a)
+            ul.appendChild(li);
+          }
+          //ul.appendChild(li); //ul 아래에 li을 넣어줌 
+          boardList.appendChild(ul); 
+        });
+      };
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,310 @@
+@import url(http://fonts.googleapis.com/earlyaccess/nanummyeongjo.css); /*다른 폰트 쓰고 싶을때 이런식으로 import해주기*/
+/*main 페이지*/
+* {
+  box-sizing: border-box;
+}
+/*body 서식 설정*/
+body {
+  font-family: Arial;
+  padding: 10px;
+}
+/* 메뉴 바 */
+.topnav {
+  overflow: hidden;
+  background-color: #333;
+}
+/* topnav, show page title on the left side */
+.topnav a {
+  float: left;
+  display: block;
+  color: #f1f1f1;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+/* topnav, show main page menu buttons on the right side */
+.topnav a#left {
+  float: right;
+  display: block;
+  color: #f1f1f1;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+/* Change color on hover */
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+/* column 서식*/
+.column {
+  float: left;
+  padding: 10px;
+}
+/* Left and right column */
+.column.left {
+  width: 30%;
+}
+/* Middle column */
+.column.middle {
+  width: 70%;
+}
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+/* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+  .column.side, .column.middle {
+    width: 100%;
+  }
+}
+/*사이즈 자동 조절*/
+img {
+  max-width: 100%;
+  height: auto;
+}
+.footer {
+  background-color: #333;
+  color: #f2f2f2;
+  text-align: center;
+  padding : 0.1px;
+}
+/*column left list outline 서식*/
+div.table_style_left {
+ 	max-width: 100%;
+ 	height: auto;
+  border:2px solid #e6e6e6;
+  border-bottom:none;
+  border-radius:0.5em;
+  -moz-border-radius: 0.3em;
+  -webkit-border-radius: 0.3em;
+  position:relative;
+  padding-top:3px;
+  }
+div.table_style_left li {
+	max-width: 100%;
+  height: 50px;
+  border-bottom: 2px solid #e6e6e6;
+  border-radius:0.5em;
+  -moz-border-radius: 0.3em;
+  -webkit-border-radius: 0.3em;
+  padding : 15px 0px 10px 20px;
+}
+/*홈페이지 왼쪽 게시판 리스트(글자)칸 서식*/
+div.table_style_left ul {
+	clear: left;
+  margin: 0;
+  padding : 0px 0px 0px 0px; /*위 왼 아래 오*/
+  list-style-type: none;
+}
+
+/*column left 링크 서식*/
+div.table_style_left a{
+  color: #4da6ff;
+  text-decoration: none;
+}
+div.table_style_left a:hover, a:active{
+  color: #003399;
+  text-decoration: underline;
+}
+
+/*column left list outline 서식*/
+div.table_style_middle {
+  max-width: 100%;
+  height: auto;
+  border:2px solid #e6e6e6;
+  border-radius:0.5em;
+  -moz-border-radius: 0.3em;
+  -webkit-border-radius: 0.3em;
+  position:relative;
+  padding-top:3px;
+   }
+
+
+/*게시글 리스트 맨 위의 header칸 표시*/
+#title{
+  max-width: 100%;
+  height: 40px;
+  border:2px solid #e6e6e6;
+  background-color:  #e6e6e6;
+  border-radius:0.5em;
+  -moz-border-radius: 0.3em;
+  -webkit-border-radius: 0.3em;
+  position:relative;
+  padding:10px 20px 20px 10px;
+  font-size: 16px;
+}
+.table_style_middle ul{
+  max-width: 100%;
+  height: auto;
+  margin: 3spx 20px;
+  padding : 5px;
+  font-size: 15px;
+  border-bottom: 2px solid #e6e6e6;
+  list-style-type: none;
+}
+.table_style_middle li{
+  max-width: 100%;
+  height: auto;
+  margin: 10px 0px;
+  padding : 5px;
+  font-size: 15px;
+  color:#999999;
+  list-style-type: none;
+}
+/*게시글 리스트의 제목 서식*/
+.table_style_middle a#post_title{
+  max-width: 100%;
+  height: 100px;
+  padding-left:0px;
+  margin: 20px;
+  font-size: 18px;
+  color : orange;
+  }
+/*게시글 리스트의 등록일 서식*/
+.table_style_middle span#post_reg_date{
+  max-width: 100%;
+  height: 100px;
+  padding: 0px 0px 0px 25px;
+  margin: 0px 10px 0px 0px;
+  font-size: 12px;
+  color: gray;
+  }
+/*게시글 리스트의 IP 서식*/
+.table_style_middle span#post_reg_ip{
+  max-width: 100%;
+  height: 100px;
+  margin: 0px 0px 0px 0px;
+  font-size: 12px;
+  color: gray;
+  }
+
+/*column middle 링크 서식*/
+div.table_style_middle a#post_title{
+  color:#ff6600;
+  text-decoration: none;
+}
+
+div.table_style_middle a#post_title:hover{
+  color:#5900b3;
+  text-decoration: underline;
+}
+
+/*글쓰기 버튼*/
+#button1 {
+  color: white;
+  font-size: 16px;
+  padding: 10px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  background-color: green;
+  border-radius:0.5em;
+  margin:0px;
+  -moz-border-radius: 0.5em;
+  -webkit-border-radius: 0.5em;
+}
+#button1:hover, #button1:active {
+  background-color: green;
+}
+/*삭제 버튼*/
+#button2{
+  color: white;
+  padding: 10px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  background-color: red;
+  border-radius:0.5em;
+  margin:0px;
+  -moz-border-radius: 0.5em;
+  -webkit-border-radius: 0.5em;
+}
+#button2:hover, #button2:active {
+  background-color: red;
+}
+
+div#post_detail.table_style_middle{
+  max-width: 100%;
+  height: auto;
+  padding: 10px;
+  border: none;
+}
+div.post_detail ul{
+  max-width: 100%;
+  height: auto;
+  list-style-type: none;
+}
+
+li#post_title {
+  max-width: 100%;
+  height: auto;
+  margin: 10px 0px;
+  padding : 5px 10px 0px 5px;
+  font-size: 30px;
+  list-style-type: none;
+  /*padding : */
+}
+
+li#post_user_name{
+  max-width: 100%;
+  height: auto;
+  border-bottom: 1px solid gray;
+  margin: 10px 0px;
+  padding : 5px 0px 10px 5px;
+  font-size: 18px;
+  list-style-type: none;
+  color: #4da6ff;
+}
+
+li#post_reg_date{
+  max-width: 100%;
+  height: auto;
+  border-bottom: 1px solid gray;
+  margin: 10px 0px;
+  padding : 10px 10px 10px 5px;
+  font-size: 15px;
+  color: #999999;
+  list-style-type: none;
+}
+li#post_content{
+  max-width: 100%;
+  height: auto;
+  margin: 10px 0px;
+  padding : 5px 10px 10px 5px;
+  font-size: 18px;
+  color: #999999;
+  list-style-type: none;
+}
+
+li#post_reg_ip{
+  max-width: 100%;
+  height: auto;
+  margin: 10px 0px;
+  padding : 5px;
+  font-size: 15px;
+  color:#999999;
+  list-style-type: none;
+}
+
+table#writepost{
+  max-width: 100%;
+  height: auto;
+  margin: 3px;
+}
+
+.column.middle caption{
+  max-width: 200px;
+  height: auto;
+  margin: 3px;
+}
+
+input#textbox{
+  max-width: 200px;
+  height: 30px;
+  margin: 3px;
+}

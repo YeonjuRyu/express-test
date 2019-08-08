@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko-KR">
+<head>
+<title>CSS Website Layout</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="mainstyle.css">
+<script src="./functions.js"></script> <!--api post get functions-->
+</head>
+
+<body>
+
+  <div class="topnav">
+    <a href="main.html">React Board</a>
+    <a href="#" id="left">로그인</a>
+    <a href="#" id="left">사진</a>
+    <a href="#" id="left">소개</a>
+    <a href="allpost.html" id="left">게시글</a>
+  </div>
+  
+  <div class="row">
+    <div class="column left">
+      <h1>게시판</h1>
+       <div id="board_name" class = "table_style_left"> <!--일단 div로 영역을 만듬 이후에 js로 내부 태그 생성-->
+    </div>
+   </div>
+   
+    <div class="column middle"> <!--게시글 전문을 가져올 부분-->
+      <div id="post_detail" class = "table_style_middle"></div>
+      <!--Array순서대로 불러오다보니 원하는 순서로 내용을 조정할 수 없-->
+    </div>
+  </div>
+  <div class="footer">
+    <p> Copyright ⓒ Your Website 2019 </p>
+  
+  <script>
+      //~~~ function, to bring board 
+      {
+        var boardList = document.getElementById("board_name")
+        //api에 있는 board list의 개수를  -> for문을 돌려서 가져온 후, 그만큼 카테고리 생성
+        var ul = document.createElement('ul');
+        getboardlist( _boardList => {
+          for(var i=0; i<_boardList.length; i++) {
+            var li = document.createElement('li');
+            var a = document.createElement('a');
+            a.innerHTML = _boardList[i].board_name;
+            a.id = _boardList[i].id;
+            a.href = "boardlist.html?id="+_boardList[i].id;
+            li.appendChild(a)
+            ul.appendChild(li);
+          }
+          //ul.appendChild(li); //ul 아래에 li을 넣어줌 
+          boardList.appendChild(ul); 
+        });
+      };
+  
+        {
+          var postDetail = document.getElementById("post_detail")
+          var params = new URLSearchParams(document.location.search.substring(1));
+          var parsedid = params.get("id");
+          getpostdetail( _postDetail => {
+            var ul = document.createElement('ul');  //post하나당 ul칸을 하나 일단 만들고 (서식용)
+            /*제목*/
+            var li_title = document.createElement('li');
+            li_title.id = "post_title";
+            li_title.innerHTML = _postDetail.post_title;
+            ul.appendChild(li_title);
+            postDetail.appendChild(ul);
+            /*사용자*/
+            var li_username = document.createElement('li');
+            li_username.id = "post_user_name";
+            li_username.href = "#"
+            li_username.innerHTML = "by " + _postDetail.post_user_name;
+            ul.appendChild(li_username);
+            postDetail.appendChild(ul);
+            /*포스트 날짜*/
+            var li_regtime = document.createElement('li');
+            li_regtime.id = "post_reg_date";
+            li_regtime.innerHTML = "Posted on " + _postDetail.post_reg_date;
+            ul.appendChild(li_regtime);
+            postDetail.appendChild(ul);
+            /*포스트 내용*/
+            var li_content = document.createElement('li');
+            li_content.id = "post_content";
+            li_content.innerHTML = _postDetail.post_content;
+            ul.appendChild(li_content);
+            postDetail.appendChild(ul);
+            /* IP*/
+            var li_regip = document.createElement('li');
+            li_regip.id = "post_reg_ip";
+            li_regip.innerHTML = "[ IP: "+_postDetail.post_reg_ip +" ]";
+            ul.appendChild(li_regip);
+            postDetail.appendChild(ul);
+            }, parsedid);
+        };
+    </script>
+  </body>
+  </html>

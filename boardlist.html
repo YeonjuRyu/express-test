@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ko-KR">
+
+<head>
+  <title>CSS Website Layout</title>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" type="text/css" href="mainstyle.css">
+  <script src="./functions.js"></script> <!--api post get functions-->
+</head>
+
+<body>
+
+<div class="topnav">
+  <a href="main.html">React Board</a>
+  <a href="#" id="left">로그인</a>
+  <a href="#" id="left">사진</a>
+  <a href="#" id="left">소개</a>
+  <a href="allpost.html" id="left">게시글</a>
+</div>
+
+<div class="row">
+  <div class="column left">
+    <h1>게시판</h1>
+     <div id="board_name" class = "table_style_left"> <!--일단 div로 영역을 만듬 이후에 js로 내부 태그 생성-->
+  </div>
+ </div>
+ 
+  <div class="column middle">
+    <div id="title">게시글 리스트</div> <!--게시글 리스트를 가져올 부분-->
+    <div id="post_title" class = "table_style_middle"></div>
+      <input type='button' id='button1' onclick='writepost()' value="글쓰기">
+      <input type='button' id='button2' onclick='deletepost()' value='삭제'>
+  </div>
+</div>
+<div class="footer">
+  <p> Copyright ⓒ Your Website 2019 </p>
+</div>
+
+  <script>
+      //~~~ function, to bring board 
+    {
+        var boardList = document.getElementById("board_name")
+        //api에 있는 board list의 개수를  -> for문을 돌려서 가져온 후, 그만큼 카테고리 생성
+        var ul = document.createElement('ul');
+        getboardlist( _boardList => {
+          for(var i=0; i<_boardList.length; i++) {
+            var li = document.createElement('li');
+            var a = document.createElement('a');
+            a.innerHTML = _boardList[i].board_name;
+            a.id = _boardList[i].id;
+            a.href = "boardlist.html?id="+_boardList[i].id;
+            li.appendChild(a)
+            ul.appendChild(li);
+          }
+          //ul.appendChild(li); //ul 아래에 li을 넣어줌 
+          boardList.appendChild(ul); 
+        });
+      };
+
+
+      {
+        var postList = document.getElementById("post_title") //post_title 아래에 넣을
+        var params = new URLSearchParams(document.location.search.substring(1));
+        var parsedid = params.get("id");
+        getpostlist(_postList => {
+          for(var i=0; i<_postList.length; i++){
+            var id = _postList[i].id; //assume id value is set 
+            var ul = document.createElement('ul');
+            var li = document.createElement('li');
+            var a_title = document.createElement('a'); //링크로 만들 예정이라 a tag
+            var span_date = document.createElement('span'); //그냥 글이라 p tag
+            var span_ip = document.createElement('span');
+            var linebreak = document.createElement('br')
+            a_title.id = "post_title";
+            a_title.href = "postpage.html?id="+_postList[i].id;
+            span_date.id = "post_reg_date";
+            span_ip.id = "post_reg_ip";
+            a_title.innerHTML = '"'+ _postList[i].post_title + '"';
+            span_date.innerHTML = "등록일: " + _postList[i].post_reg_date;
+            span_ip.innerHTML = "/ IP: " + _postList[i].post_reg_ip;
+            ul.appendChild(li);
+            li.appendChild(a_title);
+            li.appendChild(linebreak);
+            li.appendChild(span_date);
+            li.appendChild(span_ip);
+            postList.appendChild(ul);
+          }
+        }
+        ,parsedid)};
+
+      
+
+      function writepost(){
+        var params = new URLSearchParams(document.location.search.substring(1));
+        var parsedid = params.get("id")
+        window.location.href="writepost.html?id="+parsedid; //글쓰기 form 만든 이후 연결, 해당 게시판에 업로드해주기 위하여 id로 구분해줌
+      }
+      function deletepost(){
+        window.location.href="http://www.naver.com"; //글삭제 form 만든 이후 연결
+      }
+  </script>
+
+</body>
+</html>
