@@ -128,7 +128,7 @@ app.get('/writepost/:boardid', function (req, res) {
 
 app.post('/board/newpost:boardid', urlencodedParser, function(req,res){
    response = {
-      id : db.posts.length+1,
+      id : (db.posts.length+1),
       board_id : req.params.boardid, //해당 게시판에 들어가서 써줄 것이기 때문에 parser사용
       post_title : req.body.post_title,
       post_content : req.body.post_content,

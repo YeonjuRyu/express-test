@@ -1,0 +1,20 @@
+{
+  "name": "express-test",
+  "version": "1.0.0",
+  "description": "practice to make a react board using HTML, CSS, JavaScript",
+  "main": "functions.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ryeonj829/express-test.git"
+  },
+  "author": "YEONJU RYU",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ryeonj829/express-test/issues",
+    "email": "ryeonj829@gmail.com"
+  },
+  "homepage": "https://github.com/ryeonj829/express-test#readme"
+}

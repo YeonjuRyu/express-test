@@ -64,13 +64,13 @@ function getpostlist(cbFunc,id){
     })
 }
 /*4번 기능
-endpoint: 27.1.60.24:9900/board/post/:post의 id(ex: 27.1.60.24:9900/board/post/1)
+endpoint: 127.0.0.1:3000/board/post/:post의 id(ex: 27.1.60.24:9900/board/post/1)
 method: get
 input param: postid
 output param: {result, postDetail, error}
 */
 function getpostdetail(UICallback,id){
-    return fetch('http://27.1.60.24:9900/board/post/'+String(id)
+    return fetch('http://127.0.0.1:3000/board/post/'+String(id)
         ,{method:'GET'})
         .then((response) => response.json())
         .then((jsonObj) =>  {
@@ -90,7 +90,7 @@ output param: {result, postDetail, error}
 reference : https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch#Uploading_JSON_data
 */
 function postnewcontent(infoArray,id){
-    fetch('http://27.1.60.24:9900/board/post/'+String(id), {
+    fetch('127.0.0.1:3000/board/post/'+String(id), {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
