@@ -16,5 +16,10 @@
     "url": "https://github.com/ryeonj829/express-test/issues",
     "email": "ryeonj829@gmail.com"
   },
-  "homepage": "https://github.com/ryeonj829/express-test#readme"
+  "homepage": "https://github.com/ryeonj829/express-test#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1"
+  }
 }
