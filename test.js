@@ -170,10 +170,10 @@ app.post('/modified', urlencodedParser, function(req,res){
       for(i=0 ; i<db.posts.length; i++){
          if(db.posts[i].id == req.body.id){
             db.posts[i].id = req.body.id;
-            db.posts[i].board_id = req.body.board_id;
+            db.posts[i].board_id = db.posts[i].board_id;
             db.posts[i].post_title = req.body.post_title;
             db.posts[i].post_content = req.body.post_content;
-            db.posts[i].post_user_name = req.body.post_user_name;
+            db.posts[i].post_user_name = db.posts[i].post_user_name;
             db.posts[i].post_reg_date = getTimeStamp();
             db.posts[i].post_reg_ip = req.body.post_reg_ip;
          }

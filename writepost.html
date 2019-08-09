@@ -44,12 +44,6 @@
                   <td><input type="text" placeholder="작성자 이름을 입력하세요. " name="post_user_name" class="form-control"/></td>
                 </tr>
                 <tr>
-                  <th>게시판: </th>
-                    <td id = "board_id" name = "board_id">
-
-                    </td>
-                </tr>
-                <tr>
                   <th>내용: </th>
                     <td><textarea cols="10" placeholder="내용을 입력하세요. " name="post_content" class="form-control"></textarea></td>
                     <input type="hidden" id="post_reg_ip" name="post_reg_ip">
@@ -89,19 +83,20 @@
             a.id = _boardList[i].id;
             a.href = "boardlist.html?id="+_boardList[i].id;
             li.appendChild(a)
-            ul.appendChild(li);
-
-            //글 작성시 게시판 선택
-            var input = document.createElement('input');
-            input.type = "radio";
-            input.name = "board_id";
-            input.value = _boardList[i].id;
-            input.innerHTML = _boardList[i].board_name;
-            radioboardList.appendChild(input);
+            ul.appendChild(li);;
           }
           //ul.appendChild(li); //ul 아래에 li을 넣어줌 
           boardList.appendChild(ul); 
         });
+        //게시판 id
+        var form = document.getElementById('form_id')
+        var board = document.createElement('input');
+        board.type = "hidden";
+        board.name = "board_id";
+        var params = new URLSearchParams(document.location.search.substring(1));
+        var parsedid = params.get("id");
+        board.value = parsedid;
+        form.appendChild(board);
         var ip = document.getElementById("post_reg_ip");
         ip.value = getip();
 
