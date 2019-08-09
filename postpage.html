@@ -65,31 +65,28 @@
             li_title.id = "post_title";
             li_title.innerHTML = _postDetail.post_title;
             ul.appendChild(li_title);
-            postDetail.appendChild(ul);
             /*사용자*/
             var li_username = document.createElement('li');
             li_username.id = "post_user_name";
             li_username.href = "#"
             li_username.innerHTML = "by " + _postDetail.post_user_name;
             ul.appendChild(li_username);
-            postDetail.appendChild(ul);
             /*포스트 날짜*/
             var li_regtime = document.createElement('li');
             li_regtime.id = "post_reg_date";
             li_regtime.innerHTML = "Posted on " + _postDetail.post_reg_date;
             ul.appendChild(li_regtime);
-            postDetail.appendChild(ul);
             /*포스트 내용*/
             var li_content = document.createElement('li');
             li_content.id = "post_content";
             li_content.innerHTML = _postDetail.post_content;
             ul.appendChild(li_content);
-            postDetail.appendChild(ul);
             /* IP*/
             var li_regip = document.createElement('li');
             li_regip.id = "post_reg_ip";
             li_regip.innerHTML = "[ IP: "+_postDetail.post_reg_ip +" ]";
             ul.appendChild(li_regip);
+            
             postDetail.appendChild(ul);
             }, parsedid);
         };

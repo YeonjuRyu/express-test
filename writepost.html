@@ -10,17 +10,18 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="./functions.js"></script> <!--api post get functions-->
     <link rel="stylesheet" type="text/css" href="mainstyle.css">
+    <script src = "http://jsgetip.appspot.com/?getip"></script>
 </head>
 
 <body>
     <div class="topnav">
-        <a href="main.html">React Board</a>
-        <b href="#">로그인</b>
-        <b href="#">사진</b>
-        <b href="#">소개</b>
-        <b href="#">게시판</b>
+      <a href="main.html">React Board</a>
+      <a href="#" id="left">로그인</a>
+      <a href="#" id="left">사진</a>
+      <a href="#" id="left">소개</a>
+      <a href="allpost.html" id="left">게시글</a>
     </div>
-      
+    
     <div class="row">
       <div class="column left">
           <h1>게시판</h1>
@@ -33,14 +34,21 @@
             <caption> 글쓰기 </caption>
           </thead>
             <tbody id="posting">
-              <form action="" id="form_id" method="POST" encType="multiplart/form-data">
+              <form action="http://127.0.0.1:3000/postList" id="form_id" method="POST" encType="multiplart/form-data">
                 <tr>
                   <th>제목: </th>
                     <td><input type="text" placeholder="제목을 입력하세요. " name="post_title" class="form-control"/></td>
                 </tr>
                 <tr>
+                  <th>게시판: </th>
+                    <td id = "board_id" name = "board_id">
+
+                    </td>
+                </tr>
+                <tr>
                   <th>내용: </th>
                     <td><textarea cols="10" placeholder="내용을 입력하세요. " name="post_content" class="form-control"></textarea></td>
+                    <input type="hidden" id="post_reg_ip" name="post_reg_ip">
                 </tr>
                 <tr>
                   <td colspan="2">
@@ -63,12 +71,14 @@
 
     <script>
       {
-        //function for calling boardlist
-         var boardList = document.getElementById("board_name")
-        //api에 있는 board list의 개수를  -> for문을 돌려서 가져온 후, 그만큼 카테고리 생성
+        //왼편 게시판 리스트
+        var boardList = document.getElementById("board_name")
         var ul = document.createElement('ul');
+        //글 작성시 게시판 선택
+        var radioboardList = document.getElementById("board_id")
         getboardlist( _boardList => {
           for(var i=0; i<_boardList.length; i++) {
+            //왼편 게시판 리스트
             var li = document.createElement('li');
             var a = document.createElement('a');
             a.innerHTML = _boardList[i].board_name;
@@ -76,10 +86,20 @@
             a.href = "boardlist.html?id="+_boardList[i].id;
             li.appendChild(a)
             ul.appendChild(li);
+
+            //글 작성시 게시판 선택
+            var input = document.createElement('input');
+            input.type = "radio";
+            input.name = "board_id";
+            input.value = _boardList[i].id;
+            input.innerHTML = _boardList[i].board_name;
+            radioboardList.appendChild(input);
           }
           //ul.appendChild(li); //ul 아래에 li을 넣어줌 
           boardList.appendChild(ul); 
         });
+        var ip = document.getElementById("post_reg_ip");
+        ip.value = getip();
       };
 
     </script>

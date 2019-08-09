@@ -1,8 +1,9 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+const fs = require('fs');
+
 type="text/javascript";
-src="http://jsgetip.appspot.com/?getip";
 var cors = require('cors');
 app.use(cors({
    'allowedHeaders': ['sessionId', 'Content-Type'],
@@ -18,25 +19,6 @@ var server = app.listen(3000, function () {
    console.log("Example app listening at http://%s:%s", host, port)
 })
 
-var db = {
-   boards : [
-      { id : 1, board_name : "BOARD 1"},
-      { id : 2, board_name : "BOARD 2"},
-      { id : 3, board_name : "BOARD 3"},
-      { id : 4, board_name : "BOARD 4"},
-   ],
-
-   posts : [
-      { id : 1, board_id : 1, post_title : "첫번째 게시글은 뭘 할까.", post_content : "post_content", post_user_name : "Summer", post_reg_date : "a", post_reg_ip : "b" },
-      { id : 2, board_id : 2, post_title : "캣츠 12월 개봉 신난당", post_content : "post_content", post_user_name : "Summer", post_reg_date : "a", post_reg_ip : "b" },
-      { id : 3, board_id : 3, post_title : "알라딘 재밌었다.", post_content : "post_content", post_user_name : "Summer", post_reg_date : "a", post_reg_ip : "b" },
-      { id : 4, board_id : 4, post_title : "이상한 나라의 앨리스", post_content : "post_content", post_user_name : "Summer", post_reg_date : "a", post_reg_ip : "b" },
-      { id : 5, board_id : 1, post_title : "임의로 넣은 게시글", post_content : "post_content", post_user_name : "Summer", post_reg_date : "a", post_reg_ip : "b" },
-   ]
-
-}
-
-
 
 app.get('/main', function (req, res) {
    console.log("Got a GET request for the homepage");
@@ -46,104 +28,139 @@ app.get('/main', function (req, res) {
 //1. read all post
 app.get('/postList', function(req,res){
    console.log("postList");
-   var resArray = {};
-   resArray.result = "Ok";
-   resArray.postList = new Array();
-   for(var i=0; i<db.posts.length; i++){
-      var inpostList = {};
-      inpostList.id = db.posts[i].id;
-      inpostList.post_title = db.posts[i].post_title;
-      inpostList.post_reg_date = db.posts[i].post_reg_date;
-      inpostList.post_reg_ip = db.posts[i].post_reg_ip;
-      resArray.postList.push(inpostList);
-   }
-   res.send(resArray)
+   fs.readFile( __dirname + "/postdb.json", "utf8", function(err,data){
+      var resArray = {};
+      resArray.result = "Ok";
+      resArray.postList = new Array();
+      var db = JSON.parse(data); //readFile에서 data가 txt형식으로 넘어오게됨. 따라서 다시 jsonobj형태로 바꿔줘야함
+      for(var i=0; i<db.posts.length; i++){
+         var inpostList = {};
+         inpostList.id = db.posts[i].id;
+         inpostList.post_title = db.posts[i].post_title;
+         inpostList.post_reg_date = db.posts[i].post_reg_date;
+         inpostList.post_reg_ip = db.posts[i].post_reg_ip;
+         resArray.postList.push(inpostList);
+      }
+      res.send(resArray)
+   })
 })
 
 //2. read all board list
 app.get('/boardList', function(req,res){
    console.log("boardList");
-   var resArray = {};
-   resArray.result = "Ok";
-   resArray.boardList = new Array();
-   for (var i=0; i<db.boards.length; i++){
-      var inboardList = {};
-      inboardList.id = db.boards[i].id;
-      inboardList.board_name = db.boards[i].board_name;
-      resArray.boardList.push(inboardList);
+   fs.readFile( __dirname + "/postdb.json", "utf8", function(err,data){
+      var resArray = {};
+      resArray.result = "Ok";
+      resArray.boardList = new Array();
+      var db = JSON.parse(data);
+      for (var i=0; i<db.boards.length; i++){
+         var inboardList = {};
+         inboardList.id = db.boards[i].id;
+         inboardList.board_name = db.boards[i].board_name;
+         resArray.boardList.push(inboardList);
    }
-   res.send(resArray)
+   res.send(resArray);
+   })
 })
 
 //3. read all post which is in the designated board
 app.get('/board/postList/:boardid', function(req,res){
    console.log('read all post which is in the designated board');
-   var resArray = {};
-   resArray.result = "Ok";
-   resArray.postList = new Array();
-   var id = req.params.boardid;
-   for(var i=0; i<db.posts.length; i++){
-      var inpostList = {};
-      if(id == db.posts[i].board_id){
-         inpostList.id=db.posts[i].id;
-         inpostList.post_title=db.posts[i].post_title;
-         inpostList.post_reg_date=db.posts[i].post_reg_date;
-         inpostList.post_reg_ip=db.posts[i].post_reg_ip;
-         resArray.postList.push(inpostList);
+   fs.readFile( __dirname + "/postdb.json", "utf8", function(err,data){
+      var resArray = {};
+      resArray.result = "Ok";
+      resArray.postList = new Array();
+      var db = JSON.parse(data);
+      var id = req.params.boardid;
+      for(var i=0; i<db.posts.length; i++){
+         var inpostList = {};
+         if(id == db.posts[i].board_id){
+            inpostList.id=db.posts[i].id;
+            inpostList.post_title=db.posts[i].post_title;
+            inpostList.post_reg_date=db.posts[i].post_reg_date;
+            inpostList.post_reg_ip=db.posts[i].post_reg_ip;
+            resArray.postList.push(inpostList);
+         }
       }
-   }
    res.send(resArray);
+   })
 })
 
 //4. read post detail
 app.get('/board/post/:postid', function(req,res){
    console.log('read all post detail');
-   var resArray = {};
-   resArray.result = "Ok";
-   resArray.postDetail = new Array();
-   var id = req.params.postid;
-   for (var i=0; i<db.posts.length; i++){
-      var inpostDetail = {};
-      if(id == db.posts[i].id){
-         inpostDetail.id=db.posts[i].id;
-         inpostDetail.board_id=db.posts[i].board_id;
-         inpostDetail.post_title=db.posts[i].post_title;
-         inpostDetail.post_content=db.posts[i].post_content;
-         inpostDetail.post_user_name=db.posts[i].post_user_name;
-         inpostDetail.post_reg_date=db.posts[i].post_reg_date;
-         inpostDetail.post_reg_ip=db.posts[i].post_reg_ip;
-         resArray.postDetail.push(inpostDetail);
-         break;
+   fs.readFile( __dirname + "/postdb.json", "utf8", function(err,data){
+      var resArray = {};
+      resArray.result = "Ok";
+      resArray.postDetail = new Array();
+      var db = JSON.parse(data);
+      var id = req.params.postid;
+      for (var i=0; i<db.posts.length; i++){
+         if(id == db.posts[i].id){
+            var inpostDetail = {};
+            inpostDetail.id=db.posts[i].id;
+            inpostDetail.board_id=db.posts[i].board_id;
+            inpostDetail.post_title=db.posts[i].post_title;
+            inpostDetail.post_content=db.posts[i].post_content;
+            inpostDetail.post_user_name=db.posts[i].post_user_name;
+            inpostDetail.post_reg_date=db.posts[i].post_reg_date;
+            inpostDetail.post_reg_ip=db.posts[i].post_reg_ip;
+            resArray.postDetail.push(inpostDetail);
+         }
       }
-   }
    res.send(resArray);
+   })
 })
 
 //5. post new contents
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 app.use(express.static('public'));
 app.get('/writepost/:boardid', function (req, res) {
-   res.sendFile("writepost.html");
+   res.sendFile(__dirname + "/writepost.html");
 })
 
-app.post('/board/newpost:boardid', urlencodedParser, function(req,res){
-   response = {
-      id : (db.posts.length+1),
-      board_id : req.params.boardid, //해당 게시판에 들어가서 써줄 것이기 때문에 parser사용
-      post_title : req.body.post_title,
-      post_content : req.body.post_content,
-      post_user_name : "Unknown", //현재 로그인 기능 없으므로 Default로 줌
-      post_reg_date : getTimeStamp(),
-      post_reg_ip : getip()
-   };
-   console.log(response);
-   res.end(JSON.stringify(response));
+app.post('/postList', urlencodedParser, function(req,res){
+   console.log('Writing new data');
+   fs.readFile( __dirname + "/postdb.json", "utf8", function(err,data){
+      var db = JSON.parse(data);   
+      pushArray = {
+      "id" : (db.posts.length+1),
+      "board_id" : req.body.board_id, //해당 게시판에 들어가서 써줄 것이기 때문에 parser사용
+      "post_title" : req.body.post_title,
+      "post_content" : req.body.post_content,
+      "post_user_name" : "Unknown", //현재 로그인 기능 없으므로 Default로 줌
+      "post_reg_date" : getTimeStamp(),
+      "post_reg_ip" : req.body.post_reg_ip
+      };
+      db.posts.push(pushArray);
+      fs.writeFile('postdb.json',JSON.stringify(db),function(err){
+         console.error(err);
+      })
+      res.send("Successfully Uploaded!")
+   })
 })
 
 
 //6. delete content
-app.delete('/board/postDelete', function(req,res){
-   res.send('delete content')
+app.delete('/board/deletepost/:id', function(req,res){
+   var resArray = {};
+   fs.readFile( __dirname + "/postdb.json", "utf8", function(err,data){
+      var db = JSON.parse(data);
+      //찾지 못할 경우
+      if(!db[req.params.id]){
+         result["sucess"] = 0;
+         result["error"]= "not found";
+         res.json(result);
+         return;
+      }
+      delete db[req.params.id];
+      fs.writeFile(__dirname+"/postdb.json", JSON.stringify(db, null, '\t'), "utf-8", function(err,data){
+         result["success"] = 1;
+         res.json(result);
+         return;
+      })
+   })
+   res.send('Successfully deleted!')
 })
 
 //7. modify post

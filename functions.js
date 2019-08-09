@@ -77,7 +77,7 @@ function getpostdetail(UICallback,id){
             if(jsonObj.result == "Ok"){
                 UICallback(jsonObj.postDetail);
             } else if(jsonObj.result == "fail"){
-                alert('error! reason is:' + jsonObj.error)
+                alert('error! reason is:' + jsonObj.error);
             }
         })
 }
