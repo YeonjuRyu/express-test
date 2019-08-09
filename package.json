@@ -20,7 +20,11 @@
   "dependencies": {
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
+<<<<<<< HEAD
     "express": "^4.17.1",
     "fs": "0.0.1-security"
+=======
+    "express": "^4.17.1"
+>>>>>>> 3abe4bdc48f7146c2b8f7544ef812701917c840b
   }
 }
