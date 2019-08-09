@@ -105,7 +105,7 @@ app.get('/board/post/:postid', function(req,res){
             inpostDetail.post_user_name=db.posts[i].post_user_name;
             inpostDetail.post_reg_date=db.posts[i].post_reg_date;
             inpostDetail.post_reg_ip=db.posts[i].post_reg_ip;
-            resArray.postDetail.push(inpostDetail);
+            resArray.postDetail = inpostDetail;
          }
       }
    res.send(resArray);
@@ -115,7 +115,7 @@ app.get('/board/post/:postid', function(req,res){
 //5. post new contents
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 app.use(express.static('public'));
-app.get('/writepost/:boardid', function (req, res) {
+app.get('/writepost/:boardid', function (req, res) {;
    res.sendFile(__dirname + "/writepost.html");
 })
 
@@ -128,12 +128,12 @@ app.post('/postList', urlencodedParser, function(req,res){
       "board_id" : req.body.board_id, //해당 게시판에 들어가서 써줄 것이기 때문에 parser사용
       "post_title" : req.body.post_title,
       "post_content" : req.body.post_content,
-      "post_user_name" : "Unknown", //현재 로그인 기능 없으므로 Default로 줌
+      "post_user_name" : req.body.post_user_name, //현재 로그인 기능 없으므로 Default로 줌
       "post_reg_date" : getTimeStamp(),
       "post_reg_ip" : req.body.post_reg_ip
       };
       db.posts.push(pushArray);
-      fs.writeFile('postdb.json',JSON.stringify(db),function(err){
+      fs.writeFile('postdb.json',JSON.stringify(db, '\n'),function(err){
          console.error(err);
       })
       res.send("Successfully Uploaded!")
@@ -142,30 +142,47 @@ app.post('/postList', urlencodedParser, function(req,res){
 
 
 //6. delete content
-app.delete('/board/deletepost/:id', function(req,res){
-   var resArray = {};
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
+app.use(express.static('public'));
+app.delete('/postList', urlencodedParser, function(req,res){
    fs.readFile( __dirname + "/postdb.json", "utf8", function(err,data){
       var db = JSON.parse(data);
-      //찾지 못할 경우
-      if(!db[req.params.id]){
-         result["sucess"] = 0;
-         result["error"]= "not found";
-         res.json(result);
-         return;
+      for (i=0; i<db.posts.length; i++){
+         if(req.body.postlist == db.posts[i].id){
+            delete db.posts[req.params.id];
+         }
       }
-      delete db[req.params.id];
-      fs.writeFile(__dirname+"/postdb.json", JSON.stringify(db, null, '\t'), "utf-8", function(err,data){
-         result["success"] = 1;
-         res.json(result);
-         return;
-      })
-   })
    res.send('Successfully deleted!')
+   })
 })
 
-//7. modify post
-app.get('/board/postModify', function(req,res){
+//7. post new contents
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
+app.use(express.static('public'));
+app.get('/modifypost/:postid', function (req, res) {
+   res.sendFile(__dirname + "/modifypost.html");
+})
 
+app.post('/modified', urlencodedParser, function(req,res){
+   console.log('Modify existing data');
+   fs.readFile( __dirname + "/postdb.json", "utf8", function(err,data){
+      var db = JSON.parse(data);
+      for(i=0 ; i<db.posts.length; i++){
+         if(db.posts[i].id == req.body.id){
+            db.posts[i].id = req.body.id;
+            db.posts[i].board_id = req.body.board_id;
+            db.posts[i].post_title = req.body.post_title;
+            db.posts[i].post_content = req.body.post_content;
+            db.posts[i].post_user_name = req.body.post_user_name;
+            db.posts[i].post_reg_date = getTimeStamp();
+            db.posts[i].post_reg_ip = req.body.post_reg_ip;
+         }
+       }
+       fs.writeFile('postdb.json',JSON.stringify(db, '\n'),function(err){
+         console.error(err);
+      })
+      res.send("Successfully Modified!")
+   })
 })
 
 //Add1. 시간데이터 인덱싱을 통해 원하는 구간만 자르기 위한 함수

@@ -30,9 +30,10 @@
  
   <div class="column middle">
     <div id="title">게시글 리스트</div> <!--게시글 리스트를 가져올 부분-->
-    <div id="allpost" class = "table_style_middle"></div>
-      <input type='button' id='button1' onclick='writepost()' value="글쓰기">
-      <input type='button' id='button2' onclick='deletepost()' value='삭제'>
+    <div id="post_title" class = "table_style_middle"></div>
+      <form action="http://127.0.0.1:3000/postList" id="form_id" name="form_id" method="POST" encType="multiplart/form-data"></form>
+        <input type='button' id='button1' onclick='writepost()' value="글쓰기">
+        <input type="submit" id='button2' value='삭제'>
   </div>
 </div>
 <div class="footer">
@@ -60,10 +61,12 @@
         });
       };       
         
-        
-     {
-        var postList = document.getElementById("allpost") //post_title 아래에 넣을
-        getallpost(_postList => {
+      {
+        var postList = document.getElementById("post_title") //post_title 아래에 넣을
+        var formid = document.getElementById("form_id")
+        var params = new URLSearchParams(document.location.search.substring(1));
+        var parsedid = params.get("id");
+        getpostlist(_postList => {
           for(var i=0; i<_postList.length; i++){
             var id = _postList[i].id; //assume id value is set 
             var ul = document.createElement('ul');
@@ -72,6 +75,10 @@
             var span_date = document.createElement('span'); //그냥 글이라 p tag
             var span_ip = document.createElement('span');
             var linebreak = document.createElement('br')
+            var input = document.createElement('input'); //버튼을 만들어줌
+            input.type = "checkbox";
+            input.name = "postlist";
+            input.value = _postList[i].id;
             a_title.id = "post_title";
             a_title.href = "postpage.html?id="+_postList[i].id;
             span_date.id = "post_reg_date";
@@ -79,26 +86,33 @@
             a_title.innerHTML = '"'+ _postList[i].post_title + '"';
             span_date.innerHTML = "등록일: " + _postList[i].post_reg_date;
             span_ip.innerHTML = "/ IP: " + _postList[i].post_reg_ip;
-            ul.appendChild(li);
+            li.appendChild(input);
             li.appendChild(a_title);
             li.appendChild(linebreak);
             li.appendChild(span_date);
             li.appendChild(span_ip);
-            postList.appendChild(ul);
+            ul.appendChild(li);
+            formid.appendChild(ul);
+            postList.appendChild(formid);
           }
-        })
-     }
+        }
+        ,parsedid)};
      
       function writepost(){
-          var params = new URLSearchParams(document.location.search.substring(1));
-          var parsedid = params.get("id")
-          window.location.href="writepost.html?id="+parsedid; //글쓰기 form 만든 이후 연결, 해당 게시판에 업로드해주기 위하여 id로 구분해줌
+        var params = new URLSearchParams(document.location.search.substring(1));
+        var parsedid = params.get("id")
+        window.location.href="writepost.html?id="+parsedid; //글쓰기 form 만든 이후 연결, 해당 게시판에 업로드해주기 위하여 id로 구분해줌
       }
-      function deletepost(){
-          var params = new URLSearchParams(document.location.search.substring(1));
-          var parsedid = params.get("id")
-          window.location.href="deletepost.html"; //글삭제 form 만든 이후 연결
+
+      function check(){
+        if(document.form_id.postlist.checked){
+          return document.getElementByid('form_id').value
+        }
+        else{
+          return false;
+        }
       }
+
   </script>
 
 </body>
