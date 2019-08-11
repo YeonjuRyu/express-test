@@ -1,10 +1,22 @@
+//!jw, general to specific
+//!jw, require & import -> function or const
 const express = require('express');
-const app = express();
 const bodyParser = require('body-parser');
 const fs = require('fs');
-
-type="text/javascript";
 var cors = require('cors');
+
+
+ //======= 0. express setup
+ //!jw, basic, import -> specific
+const app = express();
+
+var server = app.listen(3000, function () {
+   var host = server.address().address
+   var port = server.address().port
+   console.log("Example app listening at http://%s:%s", host, port)
+})
+
+//!jw what is the meaning of CORS? what  parameters below meanining?
 app.use(cors({
    'allowedHeaders': ['sessionId', 'Content-Type'],
    'exposedHeaders': ['sessionId'],
@@ -13,22 +25,21 @@ app.use(cors({
    'preflightContinue': false
  })); //solve sCORS Issue
 
-var server = app.listen(3000, function () {
-   var host = server.address().address
-   var port = server.address().port
-   console.log("Example app listening at http://%s:%s", host, port)
-})
+//!jw one time declaration and reuse
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
+app.use(express.static('public'));
 
 
+//======= 1. api section
 app.get('/main', function (req, res) {
    console.log("Got a GET request for the homepage");
    res.send('Main page');
 })
 
 //1. read all post
-app.get('/postList', function(req,res){
+app.get('/postList', function(req,res) { //!jw, indentation ){ => ) {
    console.log("postList");
-   fs.readFile( __dirname + "/postdb.json", "utf8", function(err,data){
+   fs.readFile( __dirname + "/postdb.json", "utf8", function(err,data) {
       var resArray = {};
       resArray.result = "Ok";
       resArray.postList = new Array();
@@ -113,8 +124,6 @@ app.get('/board/post/:postid', function(req,res){
 })
 
 //5. post new contents
-var urlencodedParser = bodyParser.urlencoded({ extended: false })
-app.use(express.static('public'));
 app.get('/writepost/:boardid', function (req, res) {;
    res.sendFile(__dirname + "/writepost.html");
 })
@@ -140,10 +149,7 @@ app.post('/postList', urlencodedParser, function(req,res){
    })
 })
 
-
 //6. delete content
-var urlencodedParser = bodyParser.urlencoded({ extended: false })
-app.use(express.static('public'));
 app.delete('/postList', urlencodedParser, function(req,res){
    fs.readFile( __dirname + "/postdb.json", "utf8", function(err,data){
       var db = JSON.parse(data);
@@ -157,8 +163,6 @@ app.delete('/postList', urlencodedParser, function(req,res){
 })
 
 //7. post new contents
-var urlencodedParser = bodyParser.urlencoded({ extended: false })
-app.use(express.static('public'));
 app.get('/modifypost/:postid', function (req, res) {
    res.sendFile(__dirname + "/modifypost.html");
 })
@@ -185,6 +189,7 @@ app.post('/modified', urlencodedParser, function(req,res){
    })
 })
 
+//0. auxilary functions -> maybe split to util.js?
 //Add1. 시간데이터 인덱싱을 통해 원하는 구간만 자르기 위한 함수
 function leadingZeros(n, digits) {
    var zero = '';
