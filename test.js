@@ -41,14 +41,14 @@ var server = app.listen(3000, function () {
    console.log("Example app listening at http://%s:%s", host, port)
 })
 
-//Concept Resource : https://velopert.com/267
+/*Concept Resource : https://velopert.com/267
 process.on('exit', function() {
    console.log("Write Json File");
    fs.writeFile('/postdb.json', JSON.stringify(dball, '\n'), function(err){
       console.error(err);
    })
  });
-
+*/
 
 //!jw what is the meaning of CORS? what  parameters below meanining?
 //rz CORS issue occurs because of JS's Same Origin Policy. And the code below is for solving the issue, (Source: https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
@@ -155,8 +155,9 @@ app.get('/writepost/:boardid', function (req, res) {
 
 app.post('/postList', urlencodedParser, function(req,res){
    console.log('Writing new data');
+   var i = dball.posts.length-1
    pushArray = {
-      "id" : (dball.posts.length+1),
+      "id" : (dball.posts[i].id+1),
       "board_id" : req.body.board_id, 
       "post_title" : req.body.post_title,
       "post_content" : req.body.post_content,
@@ -169,14 +170,22 @@ app.post('/postList', urlencodedParser, function(req,res){
 })
 
 //6. delete content
-app.delete('/postList', urlencodedParser, function(req,res){
-      for (i=0; i<dball.posts.length; i++){
-         if(req.body.id == dball.posts[i].id){
-            delete dball.posts[req.params.id];
+app.get('/deletepost/:boardid', function (req, res) {
+   res.sendFile(__dirname + "/deletepost.html");
+})
+
+app.post('/deleted', urlencodedParser, function(req,res){
+   for (var i=0; i< req.body.postlist.length; i++){
+      for (var j=0; j<dball.posts.length; j++){
+         if(req.body.postlist[i] == String(dball.posts[j].id)){
+            dball.posts.splice(j, 1);
+            break;
          }
       }
-   res.send('Successfully deleted!')
+   }
+res.send('Successfully Deleted!');
 })
+
 
 //7. modify content
 app.get('/modifypost/:postid', function (req, res) {

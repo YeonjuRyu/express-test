@@ -31,9 +31,10 @@
   <div class="column middle">
     <div id="title">게시글 리스트</div> <!--게시글 리스트를 가져올 부분-->
     <div id="post_title" class = "table_style_middle"></div>
-      <form action="http://127.0.0.1:3000/postList" id="form_id" name="form_id" method="POST" encType="multiplart/form-data"></form>
+      <form action="http://127.0.0.1:3000/deleted" id="form" name="form" method="POST" encType="multiplart/form-data">
         <input type='button' id='button1' onclick='writepost()' value="글쓰기">
         <input type="submit" id='button2' value='삭제'>
+      </form>
   </div>
 </div>
 <div class="footer">
@@ -63,7 +64,7 @@
         
       {
         var postList = document.getElementById("post_title") //post_title 아래에 넣을
-        var formid = document.getElementById("form_id")
+        var formid = document.getElementById("form")
         var params = new URLSearchParams(document.location.search.substring(1));
         var parsedid = params.get("id");
         getpostlist(_postList => {
@@ -97,20 +98,18 @@
           }
         }
         ,parsedid)};
+
+      var delposts = document.getElementsByName("form");
+      var input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = 'delpostlist';
+      input.value = delposts;
+      formid.appendChild(input);
      
       function writepost(){
         var params = new URLSearchParams(document.location.search.substring(1));
         var parsedid = params.get("id")
         window.location.href="writepost.html?id="+parsedid; //글쓰기 form 만든 이후 연결, 해당 게시판에 업로드해주기 위하여 id로 구분해줌
-      }
-
-      function check(){
-        if(document.form_id.postlist.checked){
-          return document.getElementByid('form_id').value
-        }
-        else{
-          return false;
-        }
       }
 
   </script>
