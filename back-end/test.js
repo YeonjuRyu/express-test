@@ -18,7 +18,7 @@ dball.posts=new Array();
 var server = app.listen(3000, function () {
    var host = server.address().address
    var port = server.address().port
-   fs.readFile(__dirname + "/postdb.json", "utf8", function(err,data){
+   fs.readFile("./postdb.json", "utf8", function(err,data){
       var db = JSON.parse(data);
       for (var i=0; i<db.boards.length; i++){
          var inboard={};
@@ -41,14 +41,20 @@ var server = app.listen(3000, function () {
    console.log("Example app listening at http://%s:%s", host, port)
 })
 
-/*Concept Resource : https://velopert.com/267
-process.on('exit', function() {
-   console.log("Write Json File");
-   fs.writeFile('/postdb.json', JSON.stringify(dball, '\n'), function(err){
-      console.error(err);
-   })
+/*Concept Resource : https://velopert.com/267 */
+process.stdin.resume();
+
+process.on('SIGINT', function() {
+   console.log("SIGINT-handler")
+   fs.writeFile("./postdb.json", JSON.stringify(dball), function(err) {
+      if (err) {
+         console.log(err);
+         res.status(500).send('Server Error');
+      }
+   console.log('The file has been saved!')
+   process.exit();
+   });
  });
-*/
 
 //!jw what is the meaning of CORS? what  parameters below meanining?
 //rz CORS issue occurs because of JS's Same Origin Policy. And the code below is for solving the issue, (Source: https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
@@ -150,7 +156,7 @@ app.get('/board/post/:postid', function(req,res){
 
 //5. post new contents
 app.get('/writepost/:boardid', function (req, res) {
-   res.sendFile(__dirname + "/writepost.html");
+   res.sendFile(__dirname + "../front-end/writepost.html");
 })
 
 app.post('/postList', urlencodedParser, function(req,res){
@@ -166,12 +172,12 @@ app.post('/postList', urlencodedParser, function(req,res){
       "post_reg_ip" : req.body.post_reg_ip
     };
    dball.posts.push(pushArray);
-   res.send("Successfully Uploaded!");
+   res.send('Sucessfully Uploaded');
 })
 
 //6. delete content
 app.get('/deletepost/:boardid', function (req, res) {
-   res.sendFile(__dirname + "/deletepost.html");
+   res.sendFile(__dirname + "../front-end/deletepost.html");
 })
 
 app.post('/deleted', urlencodedParser, function(req,res){
@@ -189,7 +195,7 @@ res.send('Successfully Deleted!');
 
 //7. modify content
 app.get('/modifypost/:postid', function (req, res) {
-   res.sendFile(__dirname + "/modifypost.html");
+   res.sendFile(__dirname + "../front-end/modifypost.html");
 })
 
 app.post('/modified', urlencodedParser, function(req,res){

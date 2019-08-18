@@ -7,18 +7,18 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <link rel="stylesheet" type="text/css" href="mainstyle.css">
+  <link rel="stylesheet" type="text/css" href="./mainstyle.css">
   <script src="./functions.js"></script> <!--api post get functions-->
 </head>
 
 <body>
 
 <div class="topnav">
-    <a href="main.html">React Board</a>
+    <a href="./main.html">React Board</a>
     <a href="#" id="left">로그인</a>
     <a href="#" id="left">사진</a>
     <a href="#" id="left">소개</a>
-    <a href="allpost.html" id="left">게시글</a>
+    <a href="./allpost.html" id="left">게시글</a>
 </div>
 
 <div class="row">
@@ -53,7 +53,7 @@
             var a = document.createElement('a');
             a.innerHTML = _boardList[i].board_name;
             a.id = _boardList[i].id;
-            a.href = "boardlist.html?id="+_boardList[i].id;
+            a.href = "./boardlist.html?id="+_boardList[i].id;
             li.appendChild(a)
             ul.appendChild(li);
           }
@@ -109,7 +109,7 @@
       function writepost(){
         var params = new URLSearchParams(document.location.search.substring(1));
         var parsedid = params.get("id")
-        window.location.href="writepost.html?id="+parsedid; //글쓰기 form 만든 이후 연결, 해당 게시판에 업로드해주기 위하여 id로 구분해줌
+        window.location.href="./writepost.html?id="+parsedid; //글쓰기 form 만든 이후 연결, 해당 게시판에 업로드해주기 위하여 id로 구분해줌
       }
 
   </script>

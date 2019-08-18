@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <link rel="stylesheet" type="text/css" href="mainstyle.css">
+  <link rel="stylesheet" type="text/css" href="./mainstyle.css">
   <script src="./functions.js"></script>
 </head>
 
@@ -16,11 +16,11 @@
 <body>
 
 <div class="topnav">
-  <a href="main.html">React Board</a>
+  <a href="./main.html">React Board</a>
   <a href="#" id="left">로그인</a>
   <a href="#" id="left">사진</a>
   <a href="#" id="left">소개</a>
-  <a href="allpost.html" id="left">게시글</a>
+  <a href="./allpost.html" id="left">게시글</a>
 </div>
 
 <div class="row">
@@ -51,7 +51,7 @@
         var a = document.createElement('a');
         a.innerHTML = _boardList[i].board_name;
         a.id = _boardList[i].id;
-        a.href = "boardlist.html?id="+_boardList[i].id;
+        a.href = "./boardlist.html?id="+_boardList[i].id;
         li.appendChild(a)
         ul.appendChild(li);
       }
