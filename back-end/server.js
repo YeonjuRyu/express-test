@@ -163,7 +163,7 @@ app.post('/postList', urlencodedParser, function(req,res){
    console.log('Writing new data');
    var i = dball.posts.length-1
    pushArray = {
-      "id" : (dball.posts[i].id+1),
+      "id" : ((dball.posts[i].id)+1),
       "board_id" : req.body.board_id, 
       "post_title" : req.body.post_title,
       "post_content" : req.body.post_content,
@@ -172,7 +172,7 @@ app.post('/postList', urlencodedParser, function(req,res){
       "post_reg_ip" : req.body.post_reg_ip
     };
    dball.posts.push(pushArray);
-   res.send('Sucessfully Uploaded');
+   res.redirect('http://localhost:3001/board/'+req.body.board_id);
 })
 
 //6. delete content
@@ -183,13 +183,13 @@ app.get('/deletepost/:boardid', function (req, res) {
 app.post('/deleted', urlencodedParser, function(req,res){
    for (var i=0; i< req.body.postlist.length; i++){
       for (var j=0; j<dball.posts.length; j++){
-         if(req.body.postlist[i] == String(dball.posts[j].id)){
+         if(req.body.postlist[i] == dball.posts[j].id){
             dball.posts.splice(j, 1);
             break;
          }
       }
    }
-res.send('Successfully Deleted!');
+res.redirect('http://localhost:3001/board/'+req.body.board_id);
 })
 
 
@@ -212,7 +212,7 @@ app.post('/modified', urlencodedParser, function(req,res){
          break;
       }
    }
-   res.send("Successfully Modified!")
+   res.redirect('http://localhost:3001/post/'+req.body.id)
 })
 
 //Add1. 시간데이터 인덱싱을 통해 원하는 구간만 자르기 위한 함수
